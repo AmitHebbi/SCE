@@ -23,6 +23,7 @@ if (isset($_POST['passwordResetBtn'])) {
     //email validation / merge the return data into form_error array
     $form_errors = array_merge($form_errors, check_email($_POST));
 
+
     //check if error array is empty, if yes process form data and insert record
     if (empty($form_errors)) {
         //collect form data and store in variables
@@ -30,9 +31,10 @@ if (isset($_POST['passwordResetBtn'])) {
         $password1 = $_POST['new_password'];
         $password2 = $_POST['confirm_password'];
 
+
         //check if new password and confirm password is same
         if ($password1 != $password2) {
-            $result = "<p style='padding:20px; border: 1px solid gray; color: red;'> New password and confirm password does not match</p>";
+            $result = "New password and confirm password does not match";
         } else {
             try {
                 //create SQL select statement to verify if email address input exist in the database
@@ -58,13 +60,13 @@ if (isset($_POST['passwordResetBtn'])) {
                     //execute the statement
                     $statement->execute(array(':password' => $hashed_password, ':email' => $email));
 
-                    $result = "<p style='padding:20px; border: 1px solid gray; color: green;'> Password Reset Successful</p>";
+                    $result = "Password Reset Successful";
                 } else {
-                    $result = "<p style='padding:20px; border: 1px solid gray; color: red;'> The email address provided
-                                does not exist in our database, please try again</p>";
+                    $result = "The email address provided
+                                does not exist in our database, please try again";
                 }
             } catch (PDOException $ex) {
-                $result = "<p style='padding:20px; border: 1px solid gray; color: red;'> An error occurred: " . $ex->getMessage() . "</p>";
+                $result = " An error occurred: " . $ex->getMessage();
             }
         }
     }
@@ -118,15 +120,15 @@ if (isset($_POST['passwordResetBtn'])) {
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary shadow border-0">
                         <div class="card-body px-lg-5 py-lg-5">
-                            <?php if(isset($result)) : ?>
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?php if (isset($result)) : ?>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
                                     <span class="alert-inner--text"><?php echo $result; ?></span>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                             <?php endif; ?>
-                            <?php if(!empty($form_errors)) :  ?>
+                            <?php if (!empty($form_errors)) : ?>
                                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <span class="alert-inner--text"><?php echo show_errors($form_errors); ?></span>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -140,7 +142,8 @@ if (isset($_POST['passwordResetBtn'])) {
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                                         </div>
-                                        <input class="form-control" placeholder="Email" type="text">
+                                        <input class="form-control" placeholder="Email" type="text" value=""
+                                               name="email">
                                     </div>
                                 </div>
                                 <div class="form-group">
